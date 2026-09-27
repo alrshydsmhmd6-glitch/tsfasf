@@ -1,15 +1,12 @@
-import os
 import time
 import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 import yt_dlp
-from dotenv import load_dotenv
+import os
 
-# تحميل المتغيرات من ملف .env
-load_dotenv()
-
-TOKEN_BOT = os.getenv("TOKEN_BOT")
-ADMIN_ID = int(os.getenv("ADMIN_ID"))
+# التوكن والأيدي مباشرة داخل الكود لضمان عدم حدوث أي خطأ
+TOKEN_BOT = "8747969341:AAEeP6VzGnp93FtRf7KAHA9c4lPM3-mTARE"
+ADMIN_ID = 8808657227
 
 CHANNEL_USERNAME = "@loadvidtik"
 BOT_USERNAME = "Tikloadvibot"
@@ -29,13 +26,13 @@ DOWNLOADING_TITLE = "⚡ 𝓓𝓸𝔀𝓷𝓵𝓸𝓪𝓭𝓲𝓷𝓰 𝓲𝓷 �
 def send_welcome(message):
     user = message.from_user
     user_id = user.id
-
+    
     all_users.add(user_id)
     total_users_count = len(all_users)
-
+    
     user_username = f"@{user.username}" if user.username else "No Username"
     user_fullname = f"{user.first_name} {user.last_name or ''}"
-
+    
     alert_text = (
         f"🚨 <b>New User Started The Bot!</b>\n\n"
         f"👤 <b>Name:</b> {user_fullname}\n"
@@ -43,7 +40,7 @@ def send_welcome(message):
         f"🔗 <b>Username:</b> {user_username}\n"
         f"📊 <b>Total Users Count:</b> {total_users_count}"
     )
-
+    
     try:
         photos = bot.get_user_profile_photos(user_id, limit=1)
         if photos.total_count > 0:
@@ -63,7 +60,7 @@ def send_welcome(message):
         f"🔗 https://t.me/loadvidtik\n\n"
         f"👇 <i>Click the button below after joining:</i>"
     )
-
+    
     markup = InlineKeyboardMarkup(row_width=1)
     markup.add(
         InlineKeyboardButton("📢 𝓙𝓸𝓲𝓷 𝓒𝓱𝓪𝓷𝓷𝓮𝓵", url="https://t.me/loadvidtik"),
@@ -71,7 +68,7 @@ def send_welcome(message):
         InlineKeyboardButton("❓ 𝓗𝓮𝓵𝓹 & 𝓖𝓾𝓲𝓭𝓮", callback_data="help_menu"),
         InlineKeyboardButton("ℹ️ 𝓐𝓫𝓸𝓾𝓽 𝓑𝓸𝓽", callback_data="about_bot")
     )
-
+    
     bot.send_message(
         message.chat.id,
         welcome_text,
@@ -82,13 +79,13 @@ def send_welcome(message):
 @bot.callback_query_handler(func=lambda call: call.data == "check_sub")
 def verify_subscription(call):
     bot.answer_callback_query(call.id, "✨ Subscription Verified Successfully!")
-
+    
     success_text = (
         f"🎉 <b>𝓢𝓾𝓬𝓬𝓮𝓼𝓼𝓯𝓾𝓵𝓵𝔂 𝓥𝓮𝓻𝓲𝓯𝓲𝓮𝓭!</b>\n\n"
         f"✅ <i>Channel Subscribed Successfully</i>\n\n"
         f"📥 𝓔𝓷𝓽𝓮𝓻 𝓸𝓻 𝓼𝓮𝓷𝓭 𝔂𝓸𝓾𝓻 𝓣𝓲𝓴𝓣𝓸𝓴 𝓿𝓲𝓭𝓮𝓸 𝓵𝓲𝓷𝓴 𝓷𝓸𝔀 𝓪𝓷𝓭 𝓵𝓮𝓽 𝓶𝓮 𝓭𝓸 𝓽𝓱𝓮 𝓶𝓪𝓰𝓲𝓬 ✨"
     )
-
+    
     markup = InlineKeyboardMarkup()
     markup.add(InlineKeyboardButton("🏠 𝓑𝓪𝓬𝓴 𝓽𝓸 𝓗𝓸𝓶𝓮", callback_data="back_home"))
 
@@ -113,7 +110,7 @@ def help_menu(call):
     )
     markup = InlineKeyboardMarkup()
     markup.add(InlineKeyboardButton("🔙 𝓡𝓮𝓽𝓾𝓻𝓷", callback_data="back_home"))
-
+    
     bot.edit_message_text(
         chat_id=call.message.chat.id,
         message_id=call.message.message_id,
@@ -137,7 +134,7 @@ def about_bot(call):
         InlineKeyboardButton("👑 𝓒𝓸𝓷𝓽𝓪𝓬𝓽 𝓓𝓮𝓿𝓮𝓵𝓸𝓹𝓮𝓻", url="https://t.me/dl_r7c"),
         InlineKeyboardButton("🔙 𝓡𝓮𝓽𝓾𝓻𝓷", callback_data="back_home")
     )
-
+    
     bot.edit_message_text(
         chat_id=call.message.chat.id,
         message_id=call.message.message_id,
@@ -174,17 +171,17 @@ def back_home(call):
 def download_tiktok(message):
     chat_id = message.chat.id
     url = message.text.strip()
-
+    
     status_msg = bot.send_message(chat_id, f"{PROCESSING_TITLE}\n🔄 <i>Reviewing and parsing link...</i>", parse_mode="HTML")
     time.sleep(1)
-
+    
     bot.edit_message_text(
-        f"{DOWNLOADING_TITLE}\n⏳ <i>Extracting media streams... Please wait.</i>",
-        chat_id,
-        status_msg.message_id,
+        f"{DOWNLOADING_TITLE}\n⏳ <i>Extracting media streams... Please wait.</i>", 
+        chat_id, 
+        status_msg.message_id, 
         parse_mode="HTML"
     )
-
+    
     output_filename = f"video_{chat_id}.mp4"
     ydl_opts = {
         'format': 'bv*+ba/b',
@@ -197,24 +194,24 @@ def download_tiktok(message):
             'Accept-Language': 'en-US,en;q=0.5',
         },
     }
-
+    
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             ydl.download([url])
-
+        
         caption = f"✨ 𝓣𝓲𝓴𝓣𝓸𝓴 𝓟𝓻𝓸 𝓓𝓸𝔀𝓷𝓵𝓸𝓪𝓭𝓮𝓻\n📌 𝓣𝓮𝓶 𝓐𝓵-𝓣𝓪𝓱𝓶𝓮𝓮𝓵 𝓑𝓸𝔀𝓪𝓼𝓪𝓽𝓪 @{BOT_USERNAME}"
         with open(output_filename, 'rb') as video:
             bot.send_video(chat_id, video, caption=caption, parse_mode="HTML")
-
+            
         bot.delete_message(chat_id, status_msg.message_id)
         if os.path.exists(output_filename):
             os.remove(output_filename)
-
+            
     except Exception as e:
         bot.edit_message_text(
-            "❌ <b>𝓔𝓻𝓻𝓸𝓻:</b> Failed to download the video. Please verify the link.",
-            chat_id,
-            status_msg.message_id,
+            "❌ <b>𝓔𝓻𝓻𝓸𝓻:</b> Failed to download the video. Please verify the link.", 
+            chat_id, 
+            status_msg.message_id, 
             parse_mode="HTML"
         )
         if os.path.exists(output_filename):
